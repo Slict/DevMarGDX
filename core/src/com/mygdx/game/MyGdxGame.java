@@ -43,19 +43,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        for (int i = 0; i < 14; i++) {
-            textureRun[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/run/" + i + ".png"));
-        }
-        for (int i = 0; i < 4; i++) {
-            textureStand[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/standing/" + i + ".png"));
-        }
-        for (int i = 0; i < 19; i++) {
-            textureJump[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/jump/" + i + ".png"));
-        }
         texBullet = new Texture(Gdx.files.internal("bullet.png"));
         batch = new SpriteBatch();
-        v1 = new Vector2(100, 0);
-        v1temp = new Vector2();
         move = new Movement();
     }
 
@@ -64,9 +53,11 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(100, 100, 100, 20);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        texRegion = move.drawMove(v1, nRunIndex, nJumpIndex, nStandIndex);
-
-//        nRunBuffer++;
+        texRegion = move.drawMove();
+        v1 = move.getPos();
+        batch.draw(texRegion, v1.x, v1.y);
+        batch.end();
+        //        nRunBuffer++;
 //        nJumpBuffer++;
 //        nStandBuffer++;
 //        if (nRunBuffer == 4) {
@@ -139,8 +130,6 @@ public class MyGdxGame extends ApplicationAdapter {
 //        }
 //        bullet(v1);
 //        texRegion.flip(bLR, false);
-        batch.draw(texRegion, v1.x, v1.y);
-        batch.end();
     }
 
     public int whichAnim() {

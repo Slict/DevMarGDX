@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Movement {
 
+    Vector2 v1, v1temp;
     Texture textureRun[] = new Texture[14];
     Texture textureStand[] = new Texture[4];
     Texture textureJump[] = new Texture[19];
@@ -29,20 +30,20 @@ public class Movement {
     double dGrav = 8;
 
     public Movement() {
-
+        v1 = new Vector2(100, 0);
+        v1temp = new Vector2();
         for (int i = 0; i < 14; i++) {
-            textureRun[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/run/" + i + ".png"));
+            textureRun[i] = new Texture(Gdx.files.internal("run/" + i + ".png"));
         }
         for (int i = 0; i < 4; i++) {
-            textureStand[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/standing/" + i + ".png"));
+            textureStand[i] = new Texture(Gdx.files.internal("run/" + i + ".png"));
         }
         for (int i = 0; i < 19; i++) {
-            textureJump[i] = new Texture(Gdx.files.absolute("D:/Chester/core/assets/jump/" + i + ".png"));
+            textureJump[i] = new Texture(Gdx.files.internal("jump/" + i + ".png"));
         }
     }
 
-    public TextureRegion drawMove(Vector2 _v1, int nRunIndex, int nJumpIndex, int nStandIndex) {
-
+    public TextureRegion drawMove() {
         if (nRunBuffer == 4) {
             nRunIndex++;
             nRunBuffer = 0;
@@ -64,17 +65,18 @@ public class Movement {
         if (nJumpIndex == 19) {
             nJumpIndex = 0;
         }
-        nDir = whichAnim(_v1);
+        System.out.println(nRunIndex);
+        nDir = whichAnim(v1);
         if (nDir == 1) {
-            _v1.x -= 3;
+            v1.x -= 3;
             texRegion = new TextureRegion(textureRun[nRunIndex]);
         }
         if (nDir == 2) {
-            _v1.x += 3;
+            v1.x += 3;
             texRegion = new TextureRegion(textureRun[nRunIndex]);
         }
         if (nDir == 3) {
-            texRegion = drawJump(_v1);
+            texRegion = drawJump(v1);
         }
         if (nDir == 0) {
             texRegion = new TextureRegion(textureStand[nStandIndex]);
@@ -98,6 +100,10 @@ public class Movement {
         } else {
             return 0;
         }
+    }
+
+    public Vector2 getPos() {
+        return v1;
     }
 
     public TextureRegion drawJump(Vector2 _v1) {

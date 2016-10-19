@@ -35,21 +35,20 @@ public class MyGdxGame extends ApplicationAdapter {
     int nRunBuffer = 0, nRunIndex = 0;
     int nStandBuffer = 0, nStandIndex = 0;
     int nJumpBuffer = 0, nJumpIndex = 0;
-    int nCounter = 0;
+    int nGravCounter = 0, nBulletTimer = 0;
     Timer time;
     double dGrav = 8;
     boolean isJumpUp = false, isJumpDown = false;
     boolean bLR;
-    CharMain move;
+    CharMain charmain;
     Bullet bul;
     ArrayList<Bullet> ArrBul;
 
     @Override
     public void create() {
         ArrBul = new ArrayList<Bullet>();
-        texBullet = new Texture(Gdx.files.internal("bullet.png"));
         batch = new SpriteBatch();
-        move = new CharMain();
+        charmain = new CharMain();
     }
 
     @Override
@@ -57,25 +56,25 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(100, 100, 100, 20);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        v1 = move.getPos();
+        v1 = charmain.getPos();
+        nBulletTimer++;
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            ArrBul.add(new Bullet(v1.x, v1.y));
+            nBulletTimer++;
+            ArrBul.add(new Bullet(v1.x, v1.y + 15));
             System.out.println("add");
         }
+
         for (int i = 0; i < ArrBul.size(); i++) {
             Bullet bulTemp = ArrBul.get(i);
-
             bulTemp.update();
             if (bulTemp.isOffScreen()) {
                 ArrBul.remove(i);
             }
-            batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 25.0, (float) 25.0, (float) 1, (float) 1, bulTemp.fRot);
+            batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 34.0, (float) 8.0, (float) 1, (float) 1, bulTemp.fRot);
         }
-        texRegion = move.drawMove();
+        texRegion = charmain.drawMove();
         batch.draw(texRegion, v1.x, v1.y);
+        charmain.boundaries(v1);
         batch.end();
-    }
-
-    private void bullet(Vector2 v1) {
     }
 }

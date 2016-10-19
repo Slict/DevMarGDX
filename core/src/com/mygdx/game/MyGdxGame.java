@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -39,13 +40,16 @@ public class MyGdxGame extends ApplicationAdapter {
     double dGrav = 8;
     boolean isJumpUp = false, isJumpDown = false;
     boolean bLR;
-    Movement move;
+    CharMain move;
+    Bullet bul;
+    ArrayList<Bullet> ArrBul;
 
     @Override
     public void create() {
+        ArrBul = new ArrayList<Bullet>();
         texBullet = new Texture(Gdx.files.internal("bullet.png"));
         batch = new SpriteBatch();
-        move = new Movement();
+        move = new CharMain();
     }
 
     @Override
@@ -53,98 +57,23 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(100, 100, 100, 20);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        texRegion = move.drawMove();
         v1 = move.getPos();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            ArrBul.add(new Bullet(v1.x, v1.y));
+            System.out.println("add");
+        }
+        for (int i = 0; i < ArrBul.size(); i++) {
+            Bullet bulTemp = ArrBul.get(i);
+
+            bulTemp.update();
+            if (bulTemp.isOffScreen()) {
+                ArrBul.remove(i);
+            }
+            batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 25.0, (float) 25.0, (float) 1, (float) 1, bulTemp.fRot);
+        }
+        texRegion = move.drawMove();
         batch.draw(texRegion, v1.x, v1.y);
         batch.end();
-        //        nRunBuffer++;
-//        nJumpBuffer++;
-//        nStandBuffer++;
-//        if (nRunBuffer == 4) {
-//            nRunIndex++;
-//            nRunBuffer = 0;
-//        }
-//        if (nRunIndex == 6) {
-//            nRunIndex = 0;
-//        }
-//        if (nStandBuffer == 15) {
-//            nStandIndex++;
-//            nStandBuffer = 0;
-//        }
-//        if (nStandIndex == 4) {
-//            nStandIndex = 0;
-//        }
-//        if (nJumpBuffer == 3) {
-//            nJumpIndex++;
-//            nJumpBuffer = 0;
-//        }
-//        if (nJumpIndex == 19) {
-//            nJumpIndex = 0;
-//        }
-//        nDir = whichAnim();
-//        if (nDir == 0) {
-//            texRegion = new TextureRegion(textureStand[nStandIndex]);
-//        } else if (nDir == 1) {
-//            texRegion = new TextureRegion(textureRun[nRunIndex]);
-//        } else if (nDir == 2) {
-//            texRegion = new TextureRegion(textureRun[nRunIndex]);
-//        }
-//        if (isJumpUp || isJumpDown) {
-//            texRegion = new TextureRegion(textureJump[nJumpIndex]);
-//        }
-//        if (!isJumpUp && !isJumpDown) {
-//            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-//                dGrav = 6;
-//                nJumpIndex = 0;
-//                isJumpUp = true;
-//            }
-//        }
-//        nCounter++;
-//        if (nCounter % 2 == 0) {
-//            dGrav -= 0.5;
-//        }
-//        if (v1.y < 0) {
-//            v1.y = 0;
-//            dGrav = 0;
-//            isJumpUp = false;
-//            isJumpDown = false;
-//        }
-//        if (isJumpUp) {
-//            if (v1.y < 100) {
-//                v1.y += dGrav;
-//            } else {
-//                isJumpDown = true;
-//                isJumpUp = false;
-//            }
-//        }
-//        if (isJumpDown) {
-//            if (v1.y > 0) {
-//                v1.y -= dGrav;
-//                System.out.println("down");
-//            } else if (v1.y <= 0) {
-//                dGrav = 0;
-//                v1.y = 0;
-//                isJumpUp = false;
-//                isJumpDown = false;
-//            }
-//        }
-//        bullet(v1);
-//        texRegion.flip(bLR, false);
-    }
-
-    public int whichAnim() {
-        if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) {
-            bLR = true;
-            v1.x -= 3;
-            return 1;
-        }
-        if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) {
-            bLR = false;
-            v1.x += 3;
-            return 2;
-        } else {
-            return 0;
-        }
     }
 
     private void bullet(Vector2 v1) {

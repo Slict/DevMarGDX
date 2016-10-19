@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
  *
  * @author chesj2479
  */
-public class Movement {
+public class CharMain {
 
     Vector2 v1, v1temp;
     Texture textureRun[] = new Texture[14];
@@ -25,18 +25,19 @@ public class Movement {
     int nStandBuffer = 0, nStandIndex = 0;
     int nDir = 0, nCounter = 0;
     int nJumpBuffer = 0, nJumpIndex = 0;
-    boolean isJumpUp = false, isJumpDown = false;
+    boolean isJumpUp = false, isJumpDown = false, isJump = false;
     boolean bLR = false;
     double dGrav = 8;
 
-    public Movement() {
+    public CharMain() {
         v1 = new Vector2(100, 0);
         v1temp = new Vector2();
+        //Populate texture arrays with local pngs
         for (int i = 0; i < 14; i++) {
             textureRun[i] = new Texture(Gdx.files.internal("run/" + i + ".png"));
         }
         for (int i = 0; i < 4; i++) {
-            textureStand[i] = new Texture(Gdx.files.internal("run/" + i + ".png"));
+            textureStand[i] = new Texture(Gdx.files.internal("standing/" + i + ".png"));
         }
         for (int i = 0; i < 19; i++) {
             textureJump[i] = new Texture(Gdx.files.internal("jump/" + i + ".png"));
@@ -44,6 +45,10 @@ public class Movement {
     }
 
     public TextureRegion drawMove() {
+        //Increases buffer of each texture array, delays the changes between sprites
+        nRunBuffer++;
+        nJumpBuffer++;
+        nStandBuffer++;
         if (nRunBuffer == 4) {
             nRunIndex++;
             nRunBuffer = 0;
@@ -65,55 +70,18 @@ public class Movement {
         if (nJumpIndex == 19) {
             nJumpIndex = 0;
         }
-        System.out.println(nRunIndex);
-        nDir = whichAnim(v1);
-        if (nDir == 1) {
-            v1.x -= 3;
-            texRegion = new TextureRegion(textureRun[nRunIndex]);
-        }
-        if (nDir == 2) {
-            v1.x += 3;
-            texRegion = new TextureRegion(textureRun[nRunIndex]);
-        }
-        if (nDir == 3) {
-            texRegion = drawJump(v1);
-        }
+        nDir = whichAnim();
         if (nDir == 0) {
             texRegion = new TextureRegion(textureStand[nStandIndex]);
         }
-        System.out.println(textureStand[nStandIndex]);
-        texRegion.flip(bLR, false);
-        return texRegion;
-    }
-
-    public int whichAnim(Vector2 _v1) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bLR = true;
-            return 1;
+        if (nDir == 1) {
+            v1.x -= 3;
+            texRegion = new TextureRegion(textureRun[nRunIndex]);
+        } else if (nDir == 2) {
+            v1.x += 3;
+            texRegion = new TextureRegion(textureRun[nRunIndex]);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bLR = false;
-            return 2;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            return 3;
-        } else {
-            return 0;
-        }
-    }
-
-    public Vector2 getPos() {
-        return v1;
-    }
-
-    public TextureRegion drawJump(Vector2 _v1) {
-        if (nJumpBuffer == 3) {
-            nJumpIndex++;
-            nJumpBuffer = 0;
-        }
-        if (nJumpIndex == 19) {
-            nJumpIndex = 0;
-        }
+//Need to put entire jump "method" into this, otherwise it won't move horizontally while jumping
         if (isJumpUp || isJumpDown) {
             texRegion = new TextureRegion(textureJump[nJumpIndex]);
         }
@@ -128,31 +96,63 @@ public class Movement {
         if (nCounter % 2 == 0) {
             dGrav -= 0.5;
         }
-        if (_v1.y < 0) {
-            _v1.y = 0;
+        if (v1.y < 0) {
+            v1.y = 0;
             dGrav = 0;
             isJumpUp = false;
             isJumpDown = false;
         }
         if (isJumpUp) {
-            if (_v1.y < 100) {
-                _v1.y += dGrav;
+            if (v1.y < 100) {
+                v1.y += dGrav;
             } else {
                 isJumpDown = true;
                 isJumpUp = false;
             }
         }
         if (isJumpDown) {
-            if (_v1.y > 0) {
-                _v1.y -= dGrav;
+            if (v1.y > 0) {
+                v1.y -= dGrav;
                 System.out.println("down");
-            } else if (_v1.y <= 0) {
+            } else if (v1.y <= 0) {
                 dGrav = 0;
-                _v1.y = 0;
+                v1.y = 0;
                 isJumpUp = false;
                 isJumpDown = false;
             }
         }
+        texRegion.flip(bLR, false);
+        boundaries(v1);
         return texRegion;
+    }
+
+    public int whichAnim() {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            bLR = true;
+            return 1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            bLR = false;
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    public Vector2 getPos() {
+        return v1;
+    }
+
+    
+    private void boundaries(Vector2 v1) {
+        if (v1.x > Gdx.graphics.getWidth() - texRegion.getRegionWidth()) {
+            v1.x = Gdx.graphics.getWidth() - texRegion.getRegionWidth();
+        }
+        if (v1.x < 0) {
+            v1.x = 0;
+        }
+        if (v1.y < 0) {
+            v1.y += 3;
+        }
     }
 }

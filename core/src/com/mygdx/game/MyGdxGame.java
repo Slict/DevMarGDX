@@ -35,7 +35,7 @@ public class MyGdxGame extends ApplicationAdapter {
     int nRunBuffer = 0, nRunIndex = 0;
     int nStandBuffer = 0, nStandIndex = 0;
     int nJumpBuffer = 0, nJumpIndex = 0;
-    int nGravCounter = 0, nBulletTimer = 0;
+    int nGravCounter = 0;
     Timer time;
     double dGrav = 8;
     boolean isJumpUp = false, isJumpDown = false;
@@ -57,9 +57,7 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         v1 = charmain.getPos();
-        nBulletTimer++;
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            nBulletTimer++;
             ArrBul.add(new Bullet(v1.x, v1.y + 15));
             System.out.println("add");
         }

@@ -22,7 +22,7 @@ public class Bullet {
         fX = Gdx.input.getX();
         fY = (Gdx.input.getY() - 500) * -1;
         fRot = MathUtils.atan2(fY - nLoc.y, fX - nLoc.x) / MathUtils.PI * 180;
-        fSpeed = 20;
+        fSpeed = 16;
         fRotation = MathUtils.PI * fRot / 180;
     }
 

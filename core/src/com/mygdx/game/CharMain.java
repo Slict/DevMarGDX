@@ -86,7 +86,7 @@ public class CharMain {
             texRegion = new TextureRegion(textureJump[nJumpIndex]);
         }
         if (!isJumpUp && !isJumpDown) {
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 dGrav = 6;
                 nJumpIndex = 0;
                 isJumpUp = true;
@@ -127,11 +127,11 @@ public class CharMain {
     }
 
     public int whichAnim() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             bLR = true;
             return 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             bLR = false;
             return 2;
         } else {
@@ -143,8 +143,7 @@ public class CharMain {
         return v1;
     }
 
-    
-    private void boundaries(Vector2 v1) {
+    public void boundaries(Vector2 v1) {
         if (v1.x > Gdx.graphics.getWidth() - texRegion.getRegionWidth()) {
             v1.x = Gdx.graphics.getWidth() - texRegion.getRegionWidth();
         }
@@ -153,6 +152,11 @@ public class CharMain {
         }
         if (v1.y < 0) {
             v1.y += 3;
+        }
+        if (Gdx.input.getX() > v1.x) {
+            bLR = false;
+        } else if (Gdx.input.getX() < v1.x) {
+            bLR = true;
         }
     }
 }

@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,7 +36,7 @@ public class MyGdxGame extends ApplicationAdapter {
     int nRunBuffer = 0, nRunIndex = 0;
     int nStandBuffer = 0, nStandIndex = 0;
     int nJumpBuffer = 0, nJumpIndex = 0;
-    int nCounter = 0;
+    int nCounter = 0, nBulletCounter = 0, nBulletTimer;
     Timer time;
     double dGrav = 8;
     boolean isJumpUp = false, isJumpDown = false;
@@ -58,24 +59,29 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         v1 = move.getPos();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            ArrBul.add(new Bullet(v1.x, v1.y));
-            System.out.println("add");
+        nBulletTimer++;
+        if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+            if (nBulletCounter < 5) {
+                if (nBulletTimer % 6 == 0) {
+                    ArrBul.add(new Bullet(v1.x, v1.y));
+                    nBulletCounter++;
+                }
+            } else {
+            }
         }
         for (int i = 0; i < ArrBul.size(); i++) {
             Bullet bulTemp = ArrBul.get(i);
-
             bulTemp.update();
             if (bulTemp.isOffScreen()) {
                 ArrBul.remove(i);
+                nBulletCounter--;
             }
-            batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 25.0, (float) 25.0, (float) 1, (float) 1, bulTemp.fRot);
+            batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 5.0, (float) 5.0, (float) 1, (float) 1, bulTemp.fRot);
         }
         texRegion = move.drawMove();
         batch.draw(texRegion, v1.x, v1.y);
+        move.boundaries(v1);
         batch.end();
-    }
 
-    private void bullet(Vector2 v1) {
     }
 }

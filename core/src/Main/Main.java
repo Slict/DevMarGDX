@@ -27,9 +27,6 @@ public class Main extends ApplicationAdapter {
     TextureRegion texRegion;
     Texture texBG;
     Vector2 v1, v1temp;
-    int nRunBuffer = 0, nRunIndex = 0;
-    int nStandBuffer = 0, nStandIndex = 0;
-    int nJumpBuffer = 0, nJumpIndex = 0;
     int nGravCounter = 0, nBulletTimer = 0;
     Timer time;
     double dGrav = 8;
@@ -41,8 +38,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        texBG = new Texture(Gdx.files.internal("background.png"));
-        
+        texBG = new Texture(Gdx.files.internal("mkombat.jpg"));
         ArrBul = new ArrayList<Bullet>();
         batch = new SpriteBatch();
         charmain = new CharMain();
@@ -53,12 +49,12 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(100, 100, 100, 20);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(texBG, 0, 0);
+        batch.draw(texBG, 0, 0, 1280, 720);
         v1 = charmain.getPos();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             nBulletTimer++;
             if (nBulletTimer % 10 == 0) {
-                ArrBul.add(new Bullet(v1.x, v1.y + 15));
+                ArrBul.add(new Bullet(v1.x, v1.y));
                 System.out.println("add");
             }
         }
@@ -71,6 +67,7 @@ public class Main extends ApplicationAdapter {
             }
             batch.draw(bulTemp.imgOut, bulTemp.nLoc.x, bulTemp.nLoc.y, (float) 25 / 2, (float) 25 / 2, (float) 34.0, (float) 8.0, (float) 1, (float) 1, bulTemp.fRot);
         }
+
         texRegion = charmain.drawMove();
         batch.draw(texRegion, v1.x, v1.y);
         charmain.boundaries(v1);

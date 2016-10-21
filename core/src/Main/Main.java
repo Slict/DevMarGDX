@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
     int nRunBuffer = 0, nRunIndex = 0;
     int nStandBuffer = 0, nStandIndex = 0;
     int nJumpBuffer = 0, nJumpIndex = 0;
-    int nGravCounter = 0;
+    int nGravCounter = 0, nBulletTimer = 0;
     Timer time;
     double dGrav = 8;
     boolean isJumpUp = false, isJumpDown = false;
@@ -59,8 +59,11 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         v1 = charmain.getPos();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-            ArrBul.add(new Bullet(v1.x, v1.y + 15));
-            System.out.println("add");
+            nBulletTimer++;
+            if (nBulletTimer % 10 == 0) {
+                ArrBul.add(new Bullet(v1.x, v1.y + 15));
+                System.out.println("add");
+            }
         }
 
         for (int i = 0; i < ArrBul.size(); i++) {

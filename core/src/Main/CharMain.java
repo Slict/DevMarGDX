@@ -86,7 +86,7 @@ public class CharMain {
             texRegion = new TextureRegion(textureJump[nJumpIndex]);
         }
         if (!isJumpUp && !isJumpDown) {
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 dGrav = 6;
                 nJumpIndex = 0;
                 isJumpUp = true;

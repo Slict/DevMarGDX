@@ -45,7 +45,7 @@ public class CharMain {
     }
 
     public TextureRegion drawMove() {
-        //Increases buffer of each texture array, delays the changes between sprites
+        //Increases buffer of each texture array, delays the changes between sprites 
         nRunBuffer++;
         nJumpBuffer++;
         nStandBuffer++;
@@ -126,6 +126,7 @@ public class CharMain {
     }
 
     public int whichAnim() {
+        //Determine which way the sprite should be moving & facing
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             bLR = true;
             return 1;
@@ -139,10 +140,12 @@ public class CharMain {
     }
 
     public Vector2 getPos() {
+        //Returns vector position to main for drawing sprite
         return v1;
     }
 
     public void boundaries(Vector2 v1) {
+        //Making sprite flip to position of mouse, making sure it can't run off the screen
         if (Gdx.input.getX() < v1.x) {
             bLR = true;
         }

@@ -63,12 +63,12 @@ public class Main extends ApplicationAdapter {
                         bullet.getY(), // Y-coord of bottom left
                         25 / 2, // Starting X
                         25 / 2, // Starting Y
-                        34, // Width of sprite
-                        8, // Height of sprite
+                        bullet.getW(), // Width of sprite
+                        bullet.getH(), // Height of sprite
                         1, // X scale
                         1, // Y scale
                         bullet.getRotation() // Rotation in degrees
-                );
+                        );
             }
         }
         bulletArrayList = newBulletArrayList;

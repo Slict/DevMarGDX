@@ -17,13 +17,10 @@ import com.badlogic.gdx.math.Vector2;
 public class MainCharacter {
 
     final static MainCharacter shared = new MainCharacter();
-
     private Point position = new Point(100, 0);
-
     private Texture[] textureRun = new Texture[14];
     private Texture[] textureStand = new Texture[4];
     private Texture[] textureJump = new Texture[19];
-
     private TextureRegion texRegion;
     int nRunBuffer = 0;
     int nRunIndex = 0;
@@ -170,7 +167,6 @@ public class MainCharacter {
         return position;
     }
 
-
     public void boundaries(Point point) {
         //Making sprite flip to position of mouse, making sure it can't run off the screen
 
@@ -178,11 +174,9 @@ public class MainCharacter {
 
         if (point.x > Gdx.graphics.getWidth() - texRegion.getRegionWidth()) {
             point.x = Gdx.graphics.getWidth() - texRegion.getRegionWidth();
-        }
-        if (point.x < 0) {
+        } else if (point.x < 0) {
             point.x = 0;
-        }
-        if (point.y < 0) {
+        } else if (point.y < 0) {
             point.y += 3;
         }
     }

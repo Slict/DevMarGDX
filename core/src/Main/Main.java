@@ -25,6 +25,8 @@ public class Main extends ApplicationAdapter {
 
     private SpriteBatch batch;
     private Texture texBG;
+    private Texture texPlat;
+    private TextureRegion texRegion;
     private int bulletTimer = 0;
     private ArrayList<Bullet> bulletArrayList = new ArrayList<Bullet>();
 
@@ -72,8 +74,7 @@ public class Main extends ApplicationAdapter {
             }
         }
         bulletArrayList = newBulletArrayList;
-
-        TextureRegion texRegion = main.drawMove();
+        texRegion = main.drawMove();
         batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
         main.boundaries(mainCharPos);
         batch.end();

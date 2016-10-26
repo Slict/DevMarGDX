@@ -30,12 +30,13 @@ public class Main extends ApplicationAdapter {
     private int bulletTimer = 0;
     private ArrayList<Bullet> bulletArrayList = new ArrayList<Bullet>();
     private ArrayList<Platform> platformArrayList = new ArrayList<Platform>();
+    Point platPoint;
+    Collision collision;
 
     @Override
     public void create() {
         texBG = new Texture(Gdx.files.internal("mkombat.jpg"));
         batch = new SpriteBatch();
-
     }
 
     @Override
@@ -45,10 +46,8 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.draw(texBG, 0, 0, 1280, 720);
         Platform plat = new Platform();
-        MainCharacter main = MainCharacter.shared;
-
-        Point mainCharPos = main.getPosition();
-        Point platPoint = plat.randomPlat();
+        MainCharacter mainchar = MainCharacter.shared;
+        Point mainCharPos = mainchar.getPosition();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             bulletTimer++;
             if (bulletTimer % 10 == 0) {
@@ -56,16 +55,17 @@ public class Main extends ApplicationAdapter {
                 System.out.println("add");
             }
         }
-        if (Gdx.input.isKeyPressed(Keys.P)) {
+        if (Gdx.input.isKeyJustPressed(Keys.P)) {
+            platPoint = plat.randomPlat();
             platformArrayList.add(new Platform(platPoint));
         }
         for (Platform plat1 : platformArrayList) {
-            batch.draw(plat.texPlat, 200, 100);
+            batch.draw(plat.texPlat, platPoint.x, platPoint.y);
         }
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
         for (Bullet bullet : bulletArrayList) {
             bullet.updatePosition();
-            if (!bullet.isOffScreen()) {
+            if (bullet.isOffScreen() || collision.isHit(plat, plat)) {
                 newBulletArrayList.add(bullet);
                 batch.draw(Bullet.texture,
                         bullet.getX(), // X-coord of bottom left
@@ -80,10 +80,13 @@ public class Main extends ApplicationAdapter {
                         );
             }
         }
+        mainchar.boundaries(mainCharPos);
+        if (collision.isHit(platPoint, mainCharPos)) {
+            texRegion = mainchar.drawMove();
+            batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
+        }
         bulletArrayList = newBulletArrayList;
-        texRegion = main.drawMove();
-        batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
-        main.boundaries(mainCharPos);
         batch.end();
     }
+}
 }

@@ -66,12 +66,12 @@ public class Bullet {
     }
 
     float getW() {
-        fWidth -= 0.25;
+        fWidth -= 0.5;
         return fWidth;
     }
 
     float getH() {
-        fHeight += 2;
+        fHeight += 2.5;
         return fHeight;
     }
 }

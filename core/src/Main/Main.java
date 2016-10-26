@@ -29,11 +29,13 @@ public class Main extends ApplicationAdapter {
     private TextureRegion texRegion;
     private int bulletTimer = 0;
     private ArrayList<Bullet> bulletArrayList = new ArrayList<Bullet>();
+    private ArrayList<Platform> platformArrayList = new ArrayList<Platform>();
 
     @Override
     public void create() {
         texBG = new Texture(Gdx.files.internal("mkombat.jpg"));
         batch = new SpriteBatch();
+
     }
 
     @Override
@@ -42,11 +44,11 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(texBG, 0, 0, 1280, 720);
-
+        Platform plat = new Platform();
         MainCharacter main = MainCharacter.shared;
 
         Point mainCharPos = main.getPosition();
-
+        Point platPoint = plat.randomPlat();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             bulletTimer++;
             if (bulletTimer % 10 == 0) {
@@ -54,7 +56,12 @@ public class Main extends ApplicationAdapter {
                 System.out.println("add");
             }
         }
-
+        if (Gdx.input.isKeyPressed(Keys.P)) {
+            platformArrayList.add(new Platform(platPoint));
+        }
+        for (Platform plat1 : platformArrayList) {
+            batch.draw(plat.texPlat, 200, 100);
+        }
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
         for (Bullet bullet : bulletArrayList) {
             bullet.updatePosition();

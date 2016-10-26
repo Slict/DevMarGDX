@@ -76,7 +76,7 @@ public class MainCharacter {
             nStandIndex = 0;
         }
 
-        if (nJumpBuffer == 3) {
+        if (nJumpBuffer == 5) {
             nJumpIndex++;
             nJumpBuffer = 0;
         }
@@ -118,7 +118,7 @@ public class MainCharacter {
 
         nGravCounter++;
         if (nGravCounter % 2 == 0) {
-            dGrav -= 0.5;
+            dGrav -= 0.25;
         }
         if (position.y < 0) {
             position.y = 0;
@@ -127,7 +127,7 @@ public class MainCharacter {
             isJumpDown = false;
         }
         if (isJumpUp) {
-            if (position.y < 100) {
+            if (position.y < 200) {
                 position.y += dGrav;
             } else {
                 isJumpDown = true;

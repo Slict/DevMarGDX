@@ -14,7 +14,7 @@ public class Bullet {
 
     // Every bullet uses the same texture, keep a static instead of making many instances
     final static TextureRegion texture = new TextureRegion(new Texture(Gdx.files.internal("laser.png")));
-    private float fSpeed = 15;
+    private float fSpeed = 2;
     private Point pPosition;
     private float rotation;
     private float fWidth = 15;

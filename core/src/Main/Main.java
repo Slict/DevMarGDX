@@ -31,7 +31,7 @@ public class Main extends ApplicationAdapter {
     private ArrayList<Bullet> bulletArrayList = new ArrayList<Bullet>();
     private ArrayList<Platform> platformArrayList = new ArrayList<Platform>();
     Point platPoint;
-    Collision collision;
+    Collision collision = new Collision();
 
     @Override
     public void create() {
@@ -50,7 +50,7 @@ public class Main extends ApplicationAdapter {
         Point mainCharPos = mainchar.getPosition();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             bulletTimer++;
-            if (bulletTimer % 2 == 0) {
+            if (bulletTimer % 5 == 0) {
                 bulletArrayList.add(new Bullet(mainCharPos));
                 System.out.println("add");
             }
@@ -77,7 +77,10 @@ public class Main extends ApplicationAdapter {
                         1, // X scale
                         1, // Y scale
                         bullet.getRotation() // Rotation in degrees
-                );
+                        );
+                System.out.println(bullet.getX() + " " + bullet.getY());
+            }else{
+                System.out.println("Hit");
             }
         }
         bulletArrayList = newBulletArrayList;

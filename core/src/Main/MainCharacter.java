@@ -57,7 +57,6 @@ public class MainCharacter {
         nJumpBuffer++;
         nStandBuffer++;
 
-
         if (nRunBuffer == 4) {
             nRunIndex++;
             nRunBuffer = 0;
@@ -171,8 +170,7 @@ public class MainCharacter {
         //Making sprite flip to position of mouse, making sure it can't run off the screen
 
         bLR = (Gdx.input.getX() < point.x);
-
-        if (point.x > Gdx.graphics.getWidth() - texRegion.getRegionWidth()) {
+        if (point.x > Gdx.graphics.getWidth() - 30) {
             point.x = Gdx.graphics.getWidth() - texRegion.getRegionWidth();
         } else if (point.x < 0) {
             point.x = 0;

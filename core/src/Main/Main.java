@@ -50,7 +50,7 @@ public class Main extends ApplicationAdapter {
         Point mainCharPos = mainchar.getPosition();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             bulletTimer++;
-            if (bulletTimer % 10 == 0) {
+            if (bulletTimer % 2 == 0) {
                 bulletArrayList.add(new Bullet(mainCharPos));
                 System.out.println("add");
             }
@@ -65,7 +65,7 @@ public class Main extends ApplicationAdapter {
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
         for (Bullet bullet : bulletArrayList) {
             bullet.updatePosition();
-            if (bullet.isOffScreen() || collision.isHit(plat, plat)) {
+            if (!bullet.isOffScreen() && !collision.isHit(bullet.getX(), bullet.getY(), plat.getX(), plat.getY())) {
                 newBulletArrayList.add(bullet);
                 batch.draw(Bullet.texture,
                         bullet.getX(), // X-coord of bottom left
@@ -77,16 +77,14 @@ public class Main extends ApplicationAdapter {
                         1, // X scale
                         1, // Y scale
                         bullet.getRotation() // Rotation in degrees
-                        );
+                );
             }
         }
+        bulletArrayList = newBulletArrayList;
         mainchar.boundaries(mainCharPos);
-        if (collision.isHit(platPoint, mainCharPos)) {
-            texRegion = mainchar.drawMove();
-            batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
-        }
+        texRegion = mainchar.drawMove();
+        batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
         bulletArrayList = newBulletArrayList;
         batch.end();
     }
-}
 }

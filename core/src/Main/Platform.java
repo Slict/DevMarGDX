@@ -16,8 +16,8 @@ import java.util.Random;
 public class Platform {
 
     private Point pPosition;
-    private float fWidth = 200;
-    private float fHeight = 44;
+     float fWidth = 200;
+     float fHeight = 44;
     int nPlatx;
     int nPlaty;
     final static TextureRegion texPlat = new TextureRegion(new Texture(Gdx.files.internal("plat.png")));

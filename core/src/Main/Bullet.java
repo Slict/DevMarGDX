@@ -66,7 +66,7 @@ public class Bullet {
     }
 
     float getW() {
-        fWidth -= 0.5;
+        fWidth -= 0.1;
         return fWidth;
     }
 

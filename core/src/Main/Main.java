@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -24,6 +25,8 @@ import java.util.logging.Logger;
 public class Main extends ApplicationAdapter {
 
     private SpriteBatch batch;
+    Sprite sprBul;
+    Sprite sprPlat;
     private Texture texBG;
     private Texture texPlat;
     private TextureRegion texRegion;
@@ -60,27 +63,33 @@ public class Main extends ApplicationAdapter {
             platformArrayList.add(new Platform(platPoint));
         }
         for (Platform plat1 : platformArrayList) {
-            batch.draw(plat.texPlat, platPoint.x, platPoint.y);
+            sprPlat = new Sprite(plat.texPlat);
+            batch.draw(sprPlat, platPoint.x, platPoint.y);
         }
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
         for (Bullet bullet : bulletArrayList) {
             bullet.updatePosition();
-            if (!bullet.isOffScreen() && !collision.isHit(bullet.getX(), bullet.getY(), plat.getX(), plat.getY())) {
-                newBulletArrayList.add(bullet);
-                batch.draw(Bullet.texture,
-                        bullet.getX(), // X-coord of bottom left
-                        bullet.getY(), // Y-coord of bottom left
-                        25 / 2, // Starting X
-                        25 / 2, // Starting Y
-                        bullet.getW(), // Width of sprite
-                        bullet.getH(), // Height of sprite
-                        1, // X scale
-                        1, // Y scale
-                        bullet.getRotation() // Rotation in degrees
-                        );
-                System.out.println(bullet.getX() + " " + bullet.getY());
-            }else{
-                System.out.println("Hit");
+            sprBul = new Sprite(Bullet.texture);
+            Iterator<Bullet> iter = bulletArrayList.iterator();
+
+            while (iter.hasNext()) {
+                if (!bullet.isOffScreen() && !sprBul.getBoundingRectangle().overlaps(sprPlat.getBoundingRectangle())) {
+                    newBulletArrayList.add(bullet);
+                    batch.draw(sprBul,
+                            bullet.getX(), // X-coord of bottom left
+                            bullet.getY(), // Y-coord of bottom left
+                            25 / 2, // Starting X
+                            25 / 2, // Starting Y
+                            bullet.getW(), // Width of sprite
+                            bullet.getH(), // Height of sprite
+                            1, // X scale
+                            1, // Y scale
+                            bullet.getRotation() // Rotation in degrees
+                            );
+                    System.out.println(bullet.getX() + " " + bullet.getY());
+                } else {
+                    System.out.println("Hit");
+                }
             }
         }
         bulletArrayList = newBulletArrayList;
@@ -89,5 +98,6 @@ public class Main extends ApplicationAdapter {
         batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
         bulletArrayList = newBulletArrayList;
         batch.end();
+
     }
 }

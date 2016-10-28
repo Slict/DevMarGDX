@@ -12,12 +12,13 @@ import com.badlogic.gdx.Gdx;
  */
 public class Collision {
 
+    Main main;
+
     Collision() {
     }
 
-    public boolean isHit(float fObj1x, float fObj1y, float fObj2x, float fObj2y) {
-        Platform plat = new Platform();
-        if (fObj2x < fObj1x && fObj1x < fObj2x + plat.fWidth && fObj2y < fObj1y && fObj1y < fObj2y + plat.fHeight) {
+    public boolean isHit() {
+        if (main.sprBul.getBoundingRectangle().overlaps(main.sprPlat.getBoundingRectangle())) {
             return true;
         } else {
             return false;

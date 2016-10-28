@@ -71,9 +71,8 @@ public class Main extends ApplicationAdapter {
             bullet.updatePosition();
             sprBul = new Sprite(Bullet.texture);
             Iterator<Bullet> iter = bulletArrayList.iterator();
-
             while (iter.hasNext()) {
-                if (!bullet.isOffScreen() && !sprBul.getBoundingRectangle().overlaps(sprPlat.getBoundingRectangle())) {
+                if (!bullet.isOffScreen() && !collision.isHit()) {
                     newBulletArrayList.add(bullet);
                     batch.draw(sprBul,
                             bullet.getX(), // X-coord of bottom left

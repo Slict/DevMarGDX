@@ -67,27 +67,30 @@ public class Main extends ApplicationAdapter {
             batch.draw(sprPlat, platPoint.x, platPoint.y);
         }
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
-        for (Bullet bullet : bulletArrayList) {
-            bullet.updatePosition();
-            sprBul = new Sprite(Bullet.texture);
-            if (!bullet.isOffScreen() || !collision.isHit(sprBul, sprPlat)) {
-                newBulletArrayList.add(bullet);
-                batch.draw(sprBul,
-                        bullet.getX(), // X-coord of bottom left
-                        bullet.getY(), // Y-coord of bottom left
-                        25 / 2, // Starting X
-                        25 / 2, // Starting Y
-                        bullet.getW(), // Width of sprite
-                        bullet.getH(), // Height of sprite
-                        1, // X scale
-                        1, // Y scale
-                        bullet.getRotation() // Rotation in degrees
-                        );
-                System.out.println(bullet.getX() + " " + bullet.getY());
-            } else {
-                System.out.println("Hit");
-            }
+        Iterator<Bullet> iter = bulletArrayList.iterator();
 
+        for (Bullet bullet : bulletArrayList) {
+            while (iter.hasNext()) {
+                bullet = iter.next();
+                sprBul = new Sprite(Bullet.texture);
+                bullet.updatePosition();
+                collision.isHit(sprBul, sprPlat);
+                if (!bullet.isOffScreen() && !collision.isHit(sprBul, sprPlat)) {
+                    newBulletArrayList.add(bullet);
+                    batch.draw(sprBul,
+                            bullet.getX(), // X-coord of bottom left
+                            bullet.getY(), // Y-coord of bottom left
+                            25 / 2, // Starting X
+                            25 / 2, // Starting Y
+                            bullet.getW(), // Width of sprite
+                            bullet.getH(), // Height of sprite
+                            1, // X scale
+                            1, // Y scale
+                            bullet.getRotation() // Rotation in degrees
+                            );
+                } else {
+                }
+            }
         }
         bulletArrayList = newBulletArrayList;
         mainchar.boundaries(mainCharPos);

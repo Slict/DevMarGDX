@@ -20,6 +20,8 @@ public class Collision {
 
     public boolean isHit(Sprite sprBul, Sprite sprPlat) {
         if (sprBul.getBoundingRectangle().overlaps(sprPlat.getBoundingRectangle())) {
+            System.out.println("Hit");
+            
             return true;
         } else {
             return false;

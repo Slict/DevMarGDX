@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,7 +75,8 @@ public class Main extends ApplicationAdapter {
                 bullet = iter.next();
                 sprBul = new Sprite(Bullet.texture);
                 bullet.updatePosition();
-                collision.isHit(sprBul, sprPlat);
+                Rectangle rect = sprBul.getBoundingRectangle();
+                System.out.println(rect.x + " " + rect.y + " " + rect.x + rect.width + " " + rect.y + rect.height);
                 if (!bullet.isOffScreen() && !collision.isHit(sprBul, sprPlat)) {
                     newBulletArrayList.add(bullet);
                     batch.draw(sprBul,

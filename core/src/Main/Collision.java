@@ -5,6 +5,7 @@
 package Main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  *
@@ -12,13 +13,13 @@ import com.badlogic.gdx.Gdx;
  */
 public class Collision {
 
-    Main main;
+    private Main main;
 
     Collision() {
     }
 
-    public boolean isHit() {
-        if (main.sprBul.getBoundingRectangle().overlaps(main.sprPlat.getBoundingRectangle())) {
+    public boolean isHit(Sprite sprBul, Sprite sprPlat) {
+        if (sprBul.getBoundingRectangle().overlaps(sprPlat.getBoundingRectangle())) {
             return true;
         } else {
             return false;

@@ -15,7 +15,6 @@ public class Bullet {
     private float rotation;
     private float fWidth = 15;
     private float fHeight = 9;
-
     Bullet(float originX, float originY) {
         this(new Point(originX, originY));
     }

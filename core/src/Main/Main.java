@@ -30,15 +30,20 @@ public class Main extends ApplicationAdapter {
     Sprite sprPlat;
     private Texture texBG;
     private Texture texPlat;
+    private Texture texArm;
     private TextureRegion texRegion;
     private int bulletTimer = 0;
     private ArrayList<Bullet> bulletArrayList = new ArrayList<Bullet>();
     private ArrayList<Platform> platformArrayList = new ArrayList<Platform>();
+    private boolean bPlat = true;
+    private Sprite sprArm;
     Point platPoint;
     Collision collision = new Collision();
+    float bulRot;
 
     @Override
     public void create() {
+        texArm = new Texture(Gdx.files.internal("arm.png"));
         texBG = new Texture(Gdx.files.internal("mkombat.jpg"));
         batch = new SpriteBatch();
     }
@@ -53,31 +58,31 @@ public class Main extends ApplicationAdapter {
         MainCharacter mainchar = MainCharacter.shared;
         Point mainCharPos = mainchar.getPosition();
         if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-            bulletTimer++;
             if (bulletTimer % 5 == 0) {
                 bulletArrayList.add(new Bullet(mainCharPos));
                 System.out.println("add");
             }
         }
-        if (Gdx.input.isKeyJustPressed(Keys.P)) {
+        if (bulletTimer == 0) {
             platPoint = plat.randomPlat();
             platformArrayList.add(new Platform(platPoint));
         }
+        bulletTimer++;
+
         for (Platform plat1 : platformArrayList) {
             sprPlat = new Sprite(plat.texPlat);
             batch.draw(sprPlat, platPoint.x, platPoint.y);
         }
         ArrayList<Bullet> newBulletArrayList = new ArrayList<Bullet>();
         Iterator<Bullet> iter = bulletArrayList.iterator();
-
         for (Bullet bullet : bulletArrayList) {
             while (iter.hasNext()) {
                 bullet = iter.next();
                 sprBul = new Sprite(Bullet.texture);
                 bullet.updatePosition();
-                Rectangle rect = sprBul.getBoundingRectangle();
-                System.out.println(rect.x + " " + rect.y + " " + rect.x + rect.width + " " + rect.y + rect.height);
-                if (!bullet.isOffScreen() && !collision.isHit(sprBul, sprPlat)) {
+                if (!bullet.isOffScreen() && collision.isHit(sprBul, sprPlat)) {
+                    //Passing the platform sprite and bullet sprite and using the getboundingrectangles always
+                    //returns true no matter what
                     newBulletArrayList.add(bullet);
                     batch.draw(sprBul,
                             bullet.getX(), // X-coord of bottom left
@@ -90,6 +95,7 @@ public class Main extends ApplicationAdapter {
                             1, // Y scale
                             bullet.getRotation() // Rotation in degrees
                             );
+                    sprArm = new Sprite(texArm);
                 } else {
                 }
             }
@@ -98,6 +104,12 @@ public class Main extends ApplicationAdapter {
         mainchar.boundaries(mainCharPos);
         texRegion = mainchar.drawMove();
         batch.draw(texRegion, mainCharPos.x, mainCharPos.y);
+        if (bulRot != 0) {
+            batch.draw(sprArm,
+                    mainCharPos.x + 13, // X-coord of bottom left
+                    mainCharPos.y + 16 // Y-coord of bottom left
+                    );
+        }
         bulletArrayList = newBulletArrayList;
         batch.end();
 

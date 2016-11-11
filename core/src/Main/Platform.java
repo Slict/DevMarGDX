@@ -36,8 +36,8 @@ public class Platform {
 
     public Point randomPlat() {
         Random rn = new Random();
-        nPlatx = rn.nextInt(1280) + 1;
-        nPlaty = rn.nextInt(720) + 1;
+        nPlatx = rn.nextInt(1280) -200;
+        nPlaty = rn.nextInt(50) +44;
         pPosition = new Point(nPlatx, nPlaty);
         return pPosition;
     }
